@@ -16,26 +16,51 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late TabController _bottomTabController;
   late TabController _portofilioTabController;
 
-  late List<PreferredSizeWidget?> _appBars;
-
   @override
   void initState() {
     super.initState();
     _bottomTabController = TabController(length: 4, vsync: this);
     _portofilioTabController = TabController(length: 4, vsync: this);
-    _appBars = [
-      null,
-      portfolioAppBar(_portofilioTabController),
-      null,
-      null,
-    ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorPallete.backgroundColor,
-      appBar: _appBars[_bottomTabController.index],
+      appBar: _bottomTabController.index != 1
+          ? null
+          : portfolioAppBar(_portofilioTabController),
+      floatingActionButton: _bottomTabController.index != 1
+          ? null
+          : Transform.translate(
+              offset: Offset(0, -38),
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.filter_list,
+                  color: ColorPallete.backgroundColor,
+                  size: 24.sp,
+                  weight: 500,
+                ),
+                style: ElevatedButton.styleFrom(
+                  alignment: Alignment.center,
+                  backgroundColor: ColorPallete.mainColor,
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  elevation: 8,
+                ),
+                label: Text(
+                  'Filter',
+                  style: TextStyle(
+                    color: ColorPallete.backgroundColor,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15.sp,
+                  ),
+                ),
+              ),
+            ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: TabBarView(
         controller: _bottomTabController,
         children: [
@@ -75,7 +100,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           indicatorPadding: EdgeInsets.only(
             top: 3.h,
           ),
-          
           indicator: BoxDecoration(
             border: Border(
               top: BorderSide(
